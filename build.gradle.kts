@@ -5,8 +5,10 @@ val kmongo: String by project
 
 plugins {
     application
-    kotlin("jvm") version "1.4.21"
+    kotlin("jvm") version "1.5.10"
 }
+
+
 
 group = "com.mynote"
 version = "0.0.1"
@@ -15,6 +17,19 @@ application {
     mainClassName = "io.ktor.server.netty.EngineMain"
 }
 
+//val fatJar = task("fatJar", type = Jar::class) {
+//    manifest {
+//        attributes["Main-Class"] = "com.mynote"
+//    }
+//    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+//    with(tasks.jar.get() as CopySpec)
+//}
+//
+//tasks {
+//    "build" {
+//        dependsOn(fatJar)
+//    }
+//}
 repositories {
     mavenLocal()
     jcenter()
@@ -24,7 +39,7 @@ repositories {
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
+    implementation(kotlin("stdlib"))
     implementation("io.ktor:ktor-server-netty:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("io.ktor:ktor-server-core:$ktor_version")
