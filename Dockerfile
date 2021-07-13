@@ -1,6 +1,13 @@
 FROM openjdk:11-jdk-slim
-EXPOSE 8080:8080
-RUN mkdir /app
-COPY . /src
+
 WORKDIR /src
-CMD ["./docker"]
+COPY . /src
+
+RUN bash gradlew fatJar
+
+WORKDIR /run
+RUN cp /src/build/libs/*.jar /run/server.jar
+
+EXPOSE 8080
+
+CMD java -jar /run/server.jar

@@ -9,8 +9,9 @@ import io.ktor.sessions.*
 import io.ktor.auth.*
 import io.ktor.gson.*
 import io.ktor.features.*
-import kotlin.test.*
 import io.ktor.server.testing.*
+import org.junit.Assert.assertEquals
+import org.junit.Test
 
 class ApplicationTest {
     @Test

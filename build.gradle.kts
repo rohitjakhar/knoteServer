@@ -7,9 +7,6 @@ plugins {
     application
     kotlin("jvm") version "1.5.10"
 }
-
-
-
 group = "com.mynote"
 version = "0.0.1"
 
@@ -17,19 +14,6 @@ application {
     mainClassName = "io.ktor.server.netty.EngineMain"
 }
 
-//val fatJar = task("fatJar", type = Jar::class) {
-//    manifest {
-//        attributes["Main-Class"] = "com.mynote"
-//    }
-//    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
-//    with(tasks.jar.get() as CopySpec)
-//}
-//
-//tasks {
-//    "build" {
-//        dependsOn(fatJar)
-//    }
-//}
 repositories {
     mavenLocal()
     jcenter()
@@ -39,7 +23,7 @@ repositories {
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }
 
 dependencies {
-    implementation(kotlin("stdlib"))
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
     implementation("io.ktor:ktor-server-netty:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     implementation("io.ktor:ktor-server-core:$ktor_version")
@@ -54,6 +38,22 @@ dependencies {
 
 }
 
+val mainClass = "io.ktor.server.netty.EngineMain" // replace it!
+tasks {
+    register("fatJar", Jar::class.java) {
+        archiveClassifier.set("all")
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        manifest {
+            attributes("Main-Class" to mainClass)
+        }
+        from(configurations.runtimeClasspath.get()
+            .onEach { println("add from dependencies: ${it.name}") }
+            .map { if (it.isDirectory) it else zipTree(it) })
+        val sourcesMain = sourceSets.main.get()
+        sourcesMain.allSource.forEach { println("add from sources: ${it.name}") }
+        from(sourcesMain.output)
+    }
+}
 kotlin.sourceSets["main"].kotlin.srcDirs("src")
 kotlin.sourceSets["test"].kotlin.srcDirs("test")
 

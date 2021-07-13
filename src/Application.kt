@@ -49,4 +49,3 @@ private fun Authentication.Configuration.configAuth() {
         }
     }
 }
-
