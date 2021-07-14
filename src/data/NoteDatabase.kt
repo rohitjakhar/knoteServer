@@ -1,5 +1,10 @@
 package com.mynote.data
 
+import com.mongodb.ClientSessionOptions
+import com.mongodb.MongoClientSettings
+import com.mongodb.MongoCredential
+import com.mongodb.ServerAddress
+import com.mongodb.client.MongoClient
 import com.mynote.data.collections.Note
 import com.mynote.data.collections.User
 import org.litote.kmongo.MongoOperator
@@ -7,8 +12,15 @@ import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.eq
 import org.litote.kmongo.contains
 import org.litote.kmongo.reactivestreams.KMongo
+import org.litote.kmongo.service.MongoClientProvider
 
-private val client = KMongo.createClient().coroutine
+private val client = KMongo.createClient(
+    MongoCredential.createCredential(
+        "", "db-mongodb-nyc3-95098-093f6af2.mongo.ondigitalocean.com",
+        "sfsdfsd".toCharArray()
+    ).toString()
+)
+    .coroutine
 private val database = client.getDatabase("NoteDatabase")
 private val users = database.getCollection<User>()
 private val notes = database.getCollection<Note>()

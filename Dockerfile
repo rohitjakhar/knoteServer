@@ -8,6 +8,6 @@ RUN bash gradlew fatJar
 WORKDIR /run
 RUN cp /src/build/libs/*.jar /run/server.jar
 
-EXPOSE 8080
+EXPOSE 8081
 
 CMD java -jar /run/server.jar
